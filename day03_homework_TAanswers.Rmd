@@ -1,0 +1,27 @@
+---
+title: "Day 3 Homework"
+output: html_document
+---
+```{r}
+memdat<-read.csv("Winter2019Rcourse_data.csv")
+```
+
+1. Identify a numeric column in your data. Find the 95th %ile value of that column.
+
+```{r}
+x<-quantile(memdat$lr_precent, c(.05, .95))
+``` 
+
+2. Subset your data to be only include values greater than that extreme 95th %ile
+
+```{r}
+dat95<-subset(memdat, memdat$lr_precent > .9700)
+```
+
+3. Now find the lowest 5th %ile, and subset to the data that includes both the lower extremes and upper extremes
+
+```{r}
+x
+datext<-subset(memdat, memdat$lr_precent > .9700 | memdat$lr_precent < .6215)
+```
+
