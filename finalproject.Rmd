@@ -1,0 +1,60 @@
+---
+title: "Final Project"
+author: "Tamara Allard"
+date: "January 21, 2019"
+output: html_document
+---
+
+
+
+```{r}
+library(reshape2)
+library(tidyverse)
+memdat<-read.csv("Winter2019Rcourse_data.csv", na.strings = "-999")
+summary(memdat)
+
+```
+
+
+1.	I will create a function to calculate d’ that will be used to formulate a d’ Lorsbach variable.
+
+```{r}
+d.prime <- function(x1, x2) {
+  output <- (scale(x1)) - (scale(x2))
+  return(output)
+}
+
+memdat$lr_dprime<-d.prime(memdat$lr_hits, memdat$lr_fa)
+
+memdat$lr_dprime
+```
+
+
+2.	I will create 3 additional variables from the hippocampal subfields. These variables will collapse across the lateralization for the head only. Essentially, I will calculate full hippocampal head volumes for CA1, subiculum, and dentate gyrus.
+
+```{r}
+col.add <- function(x1, x2) {
+  output <- x1 + x2
+  return(output)
+}
+
+memdat$ca1head<-col.add(memdat$l_ca1head, memdat$r_ca1head)
+memdat$dghead<-col.add(memdat$l_dghead, memdat$r_dghead)
+memdat$subhead <- col.add(memdat$l_subhead, memdat$r_subhead)
+
+```
+
+
+3.	I will run three multiple regressions, each will utilize a different hippocampal subfield as the outcome variable. Sex, age, and the d’ variable I create will be predictors. 
+
+```{r}
+memlm1<- lm(dghead~sex+age+lr_dprime, data=memdat)
+summary(memlm1)
+
+memlm2<- lm(ca1head~sex+age+lr_dprime, data=memdat)
+summary(memlm2)
+
+memlm3<- lm(subhead~sex+age+lr_dprime, data=memdat)
+summary(memlm3)
+```
+
