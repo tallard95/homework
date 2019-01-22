@@ -97,7 +97,8 @@ ggplot(memdat, aes(age)) +geom_histogram()
 7. Think about the "shape" of your data. Is it "long" or "wide"? Some of both?  Try to identify a way in which it could be make "longer" (i.e., by collapsing two or more columns into a single column along with a "grouping" column) or "wider" (i.e., by splitting out a column across multiple new columns, by some grouping factor).  Use `gather()` and `spread()` from the `tidyr` package to go back and forth between long and wide shapes.
 
 ```{r}
-levels(memdat$sex)<- as.factor(c("Male", "Female"))
+memdat$sex<-as.factor(memdat$sex)
+levels(memdat$sex)<- c("Male", "Female")
 
 # gather()
 memdat.long <- gather(memdat, lr_component, score, lr_hits:lr_cr)
